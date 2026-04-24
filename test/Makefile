@@ -18,8 +18,6 @@ VERILOG_INCLUDE_DIRS += $(SRC_DIR)/serv_wb_soc_rv32e/wb_intercon
 VERILOG_INCLUDE_DIRS += $(PWD)
 
 VERILOG_SOURCES += $(PWD)/timescale.v
-VERILOG_SOURCES += $(SRC_DIR)/cdc_utils/sync2_pgen.v
-VERILOG_SOURCES += $(SRC_DIR)/cdc_utils/cc561.v
 VERILOG_SOURCES += $(SRC_DIR)/gpio/gpio.v
 VERILOG_SOURCES += $(SRC_DIR)/serv/serv_aligner.v
 VERILOG_SOURCES += $(SRC_DIR)/serv/serv_alu.v
