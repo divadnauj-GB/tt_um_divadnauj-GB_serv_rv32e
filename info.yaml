@@ -43,7 +43,6 @@ project:
     - "servile/servile.v"
     - "wb_timer/nanorv32_timer.v"
     - "wb_timer/wb_timer.v"
-    - "uart_defines.v"
     - "uart16550/raminfr.v"
     - "uart16550/uart_receiver.v"
     - "uart16550/uart_regs.v"
@@ -56,16 +55,17 @@ project:
     - "verilog-arbiter/arbiter.v"
     - "wb_qqspi/wb_qqspi.v"
     - "wb_qqspi/qqspi.v"
-    - "wb_common_params.v"
-    - "wb_common.v"
     - "wb_intercon/wb_cdc.v"
     - "wb_intercon/wb_arbiter.v"
     - "wb_intercon/wb_data_resize.v"
     - "wb_intercon/wb_mux.v"
     - "serv_wb_soc_rv32e/serv_wb_soc_rv32e.v"
     - "serv_wb_soc_rv32e/wb_intercon/wb_intercon.v"
-    - "serv_wb_soc_rv32e/wb_intercon/wb_intercon.vh"
     - "tt_um_divadnauj_GB_serv_rv32e.v"
+    - "uart_defines.v"
+    - "wb_intercon.vh"
+    - "wb_common_params.v"
+    - "wb_common.v"
 
 # The pinout of your project. Leave unused pins blank. DO NOT delete or add any pins.
 # This section is for the datasheet/website. Use descriptive names (e.g., RX, TX, MOSI, SCL, SEG_A, etc.).
