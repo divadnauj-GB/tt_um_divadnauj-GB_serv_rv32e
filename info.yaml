@@ -57,7 +57,7 @@ project:
     - "wb_qqspi/wb_qqspi.v"
     - "wb_qqspi/qqspi.v"
     - "wb_common/wb_common_params.v"
-    - "wb_common/wb_commonv"
+    - "wb_common/wb_common.v"
     - "wb_intercon/wb_cdc.v"
     - "wb_intercon/wb_arbiter.v"
     - "wb_intercon/wb_data_resize.v"
