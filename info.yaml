@@ -60,12 +60,8 @@ project:
     - "wb_intercon/wb_data_resize.v"
     - "wb_intercon/wb_mux.v"
     - "serv_wb_soc_rv32e/serv_wb_soc_rv32e.v"
-    - "serv_wb_soc_rv32e/wb_intercon/wb_intercon.v"
+    - "serv_wb_soc_rv32e/wb_intercon.v"
     - "tt_um_divadnauj_GB_serv_rv32e.v"
-    - "uart_defines.v"
-    - "wb_intercon.vh"
-    - "wb_common_params.v"
-    - "wb_common.v"
 
 # The pinout of your project. Leave unused pins blank. DO NOT delete or add any pins.
 # This section is for the datasheet/website. Use descriptive names (e.g., RX, TX, MOSI, SCL, SEG_A, etc.).
