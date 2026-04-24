@@ -20,6 +20,11 @@
   "CLOCK_PERIOD": 40,
 
   "//": "Hold slack margin - Increase them in case you are getting hold violations.",
+  "VERILOG_INCLUDE_DIRS":[
+        "dir::uart16550",
+        "dir::wb_common",
+        "dir::serv_wb_soc_rv32e/wb_intercon"
+        ],
   "FALLBACK_SDC": "dir::serv_wb_soc_rv32e.sdc",
   "PL_RESIZER_HOLD_SLACK_MARGIN": 0.02,
   "GRT_RESIZER_HOLD_SLACK_MARGIN": 0.05,
