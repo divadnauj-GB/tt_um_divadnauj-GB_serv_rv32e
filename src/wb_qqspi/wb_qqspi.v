@@ -1,3 +1,5 @@
+`default_nettype none
+
 module wb_qqspi#(
     parameter CHIP_SELECTS = 3
 )(
@@ -65,6 +67,7 @@ module wb_qqspi#(
     end
    */
 
+
     qqspi #(
       .CHIP_SELECTS(CHIP_SELECTS)
     ) qqspi_I (
@@ -94,7 +97,7 @@ module wb_qqspi#(
       .ce(ce),
 
       .clk   (wb_clk_i),
-      .resetn(~wb_rst_i)
+      .reset(wb_rst_i)
   );
 
 

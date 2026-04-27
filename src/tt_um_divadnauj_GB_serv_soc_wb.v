@@ -5,7 +5,7 @@
 
 `default_nettype none
 
-module tt_um_divadnauj_GB_serv_rv32e (
+module tt_um_divadnauj_GB_serv_soc_wb (
     input  wire [7:0] ui_in,    // Dedicated inputs
     output wire [7:0] uo_out,   // Dedicated outputs
     input  wire [7:0] uio_in,   // IOs: Input path
@@ -39,9 +39,21 @@ module tt_um_divadnauj_GB_serv_rv32e (
 
 	wire sclk;
 
+	reg  rst_sync;
+
     assign wb_clk = clk;
 
-    assign wb_rst = ~rst_n;
+	
+	always@(posedge clk, negedge rst_n) begin
+		if (~rst_n) begin
+			rst_sync <= 0;
+		end else begin
+			rst_sync <= rst_n;
+		end
+	end
+	
+	
+    assign wb_rst = ~rst_sync;
 
 
 	assign uo_out[7:0] = gpio0_o[7:0];
@@ -63,6 +75,8 @@ module tt_um_divadnauj_GB_serv_rv32e (
 	assign uio_oe[3] = 1'b1; // sclk is always output
 	//assign uio_oe[4] = w_sio_oe[1];
 	//assign uio_oe[5] = w_sio_oe[3];
+	assign uio_oe[4] = 1'b1; // uart0_tx is always output 
+	assign uio_oe[5] = 1'b0; // uart0_rx is always input
 	assign uio_oe[6] = 1'b1; // w_ce[1] is always output
 	assign uio_oe[7] = 1'b1; // w_ce[2] is always output
 
@@ -73,8 +87,6 @@ module tt_um_divadnauj_GB_serv_rv32e (
 	//assign w_sio3_i			= uio_in[5];
 
     
-    assign uio_oe[4] = 1'b1; // uart0_tx is always output 
-	assign uio_oe[5] = 1'b0; // uart0_rx is always input
 
 
 	assign uio_out[4] = uart0_tx;
@@ -85,11 +97,17 @@ module tt_um_divadnauj_GB_serv_rv32e (
 	assign w_sio3_i			= 1'b0;
 
 
-	serv_wb_soc_rv32e #(
-		.PROGADDR_RESET (32'h 0000_0000),
-		.PROGADDR_IRQ(32'h 0000_0010),
-		.BOOTROM_MEMFILE ("./src/riscv-nmon_0/nmon_nanorv32-wb-soc_24MHz_115200.txt"),
-		.BOOTROM_MEMDEPTH (1024)
+	serv_soc_wb #(
+		.width(1),
+		.EMBEDDED(1),
+		.PRE_REGISTER(1),
+		.reset_pc(32'h00000000),
+		.reset_strategy("MINI"),
+		.sim(0),
+		.debug(0),
+		.with_c(0),
+		.with_csr(1),
+		.with_mdu(0)
 	)
 	soc(
 		.clock (wb_clk),

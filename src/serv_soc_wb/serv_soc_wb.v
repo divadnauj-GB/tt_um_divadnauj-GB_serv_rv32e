@@ -1,11 +1,16 @@
 `default_nettype none
 
-module serv_wb_soc_rv32e #(
-	parameter SIM = 0,
-	parameter PROGADDR_RESET = 32'h 0000_0000,
-	parameter PROGADDR_IRQ = 32'h 0000_0010,
-	parameter BOOTROM_MEMFILE = "",
-	parameter BOOTROM_MEMDEPTH = 1024
+module serv_soc_wb #(
+	parameter width = 1,
+    parameter EMBEDDED = 0,
+    parameter PRE_REGISTER = 1,
+    parameter reset_pc = 32'h00000000,
+    parameter reset_strategy = "MINI",
+    parameter sim = 0,
+    parameter debug = 0,
+    parameter with_c = 0,
+    parameter with_csr = 1,
+    parameter with_mdu = 0
 	)
 	(
 	input  wire clock,
@@ -75,13 +80,13 @@ module serv_wb_soc_rv32e #(
    );
 
 	uart_top #(
-		.SIM (SIM)
+		.SIM (sim)
 	)
 	uart16550(
 		.wb_clk_i(wb_clk),
 		.wb_rst_i(wb_rst),
 
-		.wb_adr_i(wb_uart0_adr),
+		.wb_adr_i(wb_uart0_adr[2:0]),
 		.wb_dat_i(wb_uart0_dat),
 		.wb_sel_i(wb_uart0_sel),
 		.wb_we_i(wb_uart0_we),
@@ -91,7 +96,14 @@ module serv_wb_soc_rv32e #(
 		.wb_ack_o(wb_uart0_ack),
 
 		.stx_pad_o(uart_tx),
-		.srx_pad_i(uart_rx)
+		.srx_pad_i(uart_rx),
+		.rts_pad_o(),
+		.cts_pad_i(),
+		.dtr_pad_o(),
+		.dsr_pad_i(),
+		.ri_pad_i(),
+		.dcd_pad_i(),
+		.int_o()
 	);
 
 	gpio gpio0 (
@@ -102,13 +114,13 @@ module serv_wb_soc_rv32e #(
 
 		// Wishbone slave interface
 		.wb_adr_i	(wb_gpio0_adr[2]),
-		.wb_dat_i	(wb_gpio0_dat),
+		.wb_dat_i	(wb_gpio0_dat[7:0]),
 		.wb_we_i	(wb_gpio0_we),
 		.wb_cyc_i	(wb_gpio0_cyc),
 		.wb_stb_i	(wb_gpio0_stb),
 		.wb_cti_i	(wb_gpio0_cti),
 		.wb_bte_i	(wb_gpio0_bte),
-		.wb_dat_o	(wb_gpio0_rdt),
+		.wb_dat_o	(wb_gpio0_rdt[7:0]),
 		.wb_ack_o	(wb_gpio0_ack),
 		.wb_err_o	(wb_gpio0_err),
 		.wb_rty_o	(wb_gpio0_rty),
@@ -116,6 +128,7 @@ module serv_wb_soc_rv32e #(
 		.wb_clk		(wb_clk),
 		.wb_rst		(wb_rst)
 	);
+	assign wb_gpio0_rdt[31:8] = 24'h000000;
 
 	wire timer_irq;
 
@@ -140,7 +153,19 @@ module serv_wb_soc_rv32e #(
 		.wb_rst		(wb_rst)
 	);
 
-	servile_rf servile_core (
+	servile_rf #(
+	.width(width),
+	.EMBEDDED(EMBEDDED),
+	.PRE_REGISTER(PRE_REGISTER),
+	.reset_pc(reset_pc),
+	.reset_strategy(reset_strategy),
+	.sim(sim),
+	.debug(debug),
+	.with_c(with_c),
+	.with_csr(with_csr),
+	.with_mdu(with_mdu)
+	) 
+	servile_core (
 		    .i_clk(wb_clk),
    			.i_rst(wb_rst),
    			.i_timer_irq(timer_irq),

@@ -1,3 +1,5 @@
+`default_nettype none
+
 module wb_timer
        (
 	input wire 			wb_clk,
@@ -22,7 +24,6 @@ module wb_timer
 reg [1:0] mtime_valid;
 reg [1:0] mtimecmp_valid;
 wire mtime_ready;
-wire mtimecmp_ready;
 wire [3:0] mtime_wstrb;
 wire wb_valid = wb_cyc_i & wb_stb_i & !wb_ack_o;
 wire [31:0] wb_dat_rd;
@@ -41,7 +42,7 @@ always @(*) begin
 end
 
 
-always @(posedge wb_clk)
+always @(posedge wb_clk, posedge wb_rst)
 	if (wb_rst) begin
 		wb_ack_o <= 0;
 		wb_dat_o <= 32'h0000_0000;
@@ -63,7 +64,7 @@ nanorv32_timer #(
 				.ENABLE_MTIMECMP	(1)
 			)
 			timer (
-				.resetn(~wb_rst),
+				.reset(wb_rst),
 				.clk(wb_clk),
 				.io_mtime_valid(mtime_valid),
 				.io_mtimecmp_valid(mtimecmp_valid),

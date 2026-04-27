@@ -70,7 +70,7 @@ module tb ();
   // Dump the signals to a FST file. You can view it with gtkwave or surfer.
   initial begin
     $dumpfile("tb.fst");
-    $dumpvars(1, tb);
+    $dumpvars(0, tb);
     #1;
   end
 
@@ -87,6 +87,9 @@ module tb ();
 `ifdef GL_TEST
   wire VPWR = 1'b1;
   wire VGND = 1'b0;
+`elsif GL_VDD
+  wire VDD = 1'b1;
+  wire VSS = 1'b0;
 `endif
 
   	wire w_sio0_si_mosi_i;
@@ -169,11 +172,14 @@ module tb ();
   //assign w_sio_oe[3:0] = {uio_oe[5:4],uio_oe[2:1]}; // w_ce[0] is always output
 
   // Replace tt_um_example with your module name:
-  tt_um_divadnauj_GB_serv_rv32e user_project (
+  tt_um_divadnauj_GB_serv_soc_wb user_project (
       // Include power ports for the Gate Level test:
 `ifdef GL_TEST
       .VPWR(VPWR),
       .VGND(VGND),
+`elsif GL_VDD
+	  .VDD(VDD),
+      .VSS(VSS),
 `endif
 
       .ui_in  (ui_in),    // Dedicated inputs

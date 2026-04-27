@@ -70,7 +70,7 @@ module serv_ctrl
    assign {pc_plus_4_cy,pc_plus_4} = pc+plus_4+pc_plus_4_cy_r_w;
 
    generate
-      if (|WITH_CSR) begin : gen_csr
+      if (WITH_CSR==1) begin : gen_csr
 	 if (W == 1) begin : gen_new_pc_w_eq_1
 	    assign new_pc = i_trap ? (i_csr_pc & !(i_cnt0 || i_cnt1)) : i_jump ? pc_plus_offset_aligned : pc_plus_4;
          end else if (W == 4) begin : gen_new_pc_w_eq_4
@@ -100,16 +100,17 @@ module serv_ctrl
 
    initial if (RESET_STRATEGY == "NONE") o_ibus_adr = RESET_PC;
 
-   always @(posedge clk) begin
-      pc_plus_4_cy_r <= i_pc_en & pc_plus_4_cy;
-      pc_plus_offset_cy_r <= i_pc_en & pc_plus_offset_cy;
-
-      if (RESET_STRATEGY == "NONE") begin
-	 if (i_pc_en)
-	   o_ibus_adr <= {new_pc, o_ibus_adr[31:W]};
+   always @(posedge clk, posedge i_rst) begin
+      if (i_rst) begin
+         o_ibus_adr <= RESET_PC ;
+         pc_plus_offset_cy_r <= 0;
+         pc_plus_4_cy_r <= 0;
       end else begin
-	 if (i_pc_en | i_rst)
-	   o_ibus_adr <= i_rst ? RESET_PC : {new_pc, o_ibus_adr[31:W]};
+         pc_plus_4_cy_r <= i_pc_en & pc_plus_4_cy;
+         pc_plus_offset_cy_r <= i_pc_en & pc_plus_offset_cy;
+         if (i_pc_en)
+	         o_ibus_adr <= {new_pc, o_ibus_adr[31:W]};
       end
+
    end
 endmodule

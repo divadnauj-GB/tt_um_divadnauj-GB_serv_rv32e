@@ -6,10 +6,12 @@ SPDX-License-Identifier: Apache-2.0
 * Adapted to SERV by @Abdulwadoodd as part of the project under spring '22 LFX Mentorship program */
 
 /* Decodes RISC-V compressed instructions into their RV32i equivalent. */
+`default_nettype none
 
 module serv_compdec
   (
    input wire i_clk,
+   input wire i_rst,
    input  wire [31:0] i_instr,
    input  wire i_ack,
    output wire [31:0] o_instr,
@@ -29,9 +31,13 @@ module serv_compdec
 
   assign o_instr = illegal_instr ? i_instr : comp_instr;
 
-  always @(posedge i_clk) begin
-    if(i_ack)
-      o_iscomp <= !illegal_instr;
+  always @(posedge i_clk, posedge i_rst) begin
+    if (i_rst) begin
+        o_iscomp <= 0;
+    end else begin
+        if(i_ack)
+            o_iscomp <= !illegal_instr;
+    end
   end
 
   always @ (*) begin
