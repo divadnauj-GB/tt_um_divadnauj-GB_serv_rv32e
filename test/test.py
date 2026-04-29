@@ -17,7 +17,7 @@ OUTPUT_SIM="FreeRTOs.txt"
 async def uart_send(clk,dev, msg=[]):
     for d in msg:
         await dev.write(f"{d}".encode())
-        await ClockCycles(clk, 10500)
+        await ClockCycles(clk, 105000)
     await ClockCycles(clk, 50500)
 
 
@@ -44,7 +44,7 @@ async def test_uart(dut):
     cocotb.start_soon(uart_monitor.start())
     await ClockCycles(dut.clk, 10)
 
-    await ClockCycles(dut.clk, 20000 * 10)
+    await ClockCycles(dut.clk, 20000 * 40)
    
     await uart_send(dut.clk, uart_source, "g01000000")
 

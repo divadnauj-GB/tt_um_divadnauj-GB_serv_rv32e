@@ -120,6 +120,8 @@ module wb_mux
    assign slave_sel = ff1(match);
 
    always @(posedge wb_clk_i)
+     if (wb_rst_i) wbm_err <= 0;
+     else
      wbm_err <= wbm_cyc_i & !(|match);
 
    assign wbs_adr_o = {num_slaves{wbm_adr_i}};

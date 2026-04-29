@@ -91,14 +91,20 @@ module arbiter
 
 
     always @(posedge clk)
+        if (rst) grant <= 0;
+        else
         grant <= token & request;
 
 
     always @(posedge clk)
+        if (rst) select <= 0;
+        else
         select <= ff1(token & request);
 
 
     always @(posedge clk)
+        if (rst) active <= 0;
+        else
         active <= |(token & request);
 
 

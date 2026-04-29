@@ -200,7 +200,7 @@ raminfr #(fifo_pointer_w,8,fifo_depth) rfifo
 			.dpo(data8_out)
 		); 
 
-always @(posedge clk or posedge wb_rst_i) // synchronous FIFO
+always @(posedge clk ) // synchronous FIFO
 begin
 	if (wb_rst_i)
 	begin
@@ -209,20 +209,20 @@ begin
 		count		<= 0;
 		fifo[0] <= 0;
 		fifo[1] <= 0;
-		fifo[2] <= 0;
-		fifo[3] <= 0;
-		fifo[4] <= 0;
-		fifo[5] <= 0;
-		fifo[6] <= 0;
-		fifo[7] <= 0;
-		fifo[8] <= 0;
-		fifo[9] <= 0;
-		fifo[10] <= 0;
-		fifo[11] <= 0;
-		fifo[12] <= 0;
-		fifo[13] <= 0;
-		fifo[14] <= 0;
-		fifo[15] <= 0;
+		//fifo[2] <= 0;
+		//fifo[3] <= 0;
+		//fifo[4] <= 0;
+		//fifo[5] <= 0;
+		//fifo[6] <= 0;
+		//fifo[7] <= 0;
+		//fifo[8] <= 0;
+		//fifo[9] <= 0;
+		//fifo[10] <= 0;
+		//fifo[11] <= 0;
+		//fifo[12] <= 0;
+		//fifo[13] <= 0;
+		//fifo[14] <= 0;
+		//fifo[15] <= 0;
 	end
 	else
 	if (fifo_reset) begin
@@ -231,20 +231,20 @@ begin
 		count		<= 0;
 		fifo[0] <= 0;
 		fifo[1] <= 0;
-		fifo[2] <= 0;
-		fifo[3] <= 0;
-		fifo[4] <= 0;
-		fifo[5] <= 0;
-		fifo[6] <= 0;
-		fifo[7] <= 0;
-		fifo[8] <= 0;
-		fifo[9] <= 0;
-		fifo[10] <= 0;
-		fifo[11] <= 0;
-		fifo[12] <= 0;
-		fifo[13] <= 0;
-		fifo[14] <= 0;
-		fifo[15] <= 0;
+		//fifo[2] <= 0;
+		//fifo[3] <= 0;
+		//fifo[4] <= 0;
+		//fifo[5] <= 0;
+		//fifo[6] <= 0;
+		//fifo[7] <= 0;
+		//fifo[8] <= 0;
+		//fifo[9] <= 0;
+		//fifo[10] <= 0;
+		//fifo[11] <= 0;
+		//fifo[12] <= 0;
+		//fifo[13] <= 0;
+		//fifo[14] <= 0;
+		//fifo[15] <= 0;
 	end
   else
 	begin
@@ -271,7 +271,7 @@ begin
 	end
 end   // always
 
-always @(posedge clk or posedge wb_rst_i) // synchronous FIFO
+always @(posedge clk ) // synchronous FIFO
 begin
   if (wb_rst_i)
     overrun   <= 1'b0;
@@ -292,26 +292,28 @@ assign data_out = {data8_out,fifo[bottom]};
 
 wire	[2:0]	word0 = fifo[0];
 wire	[2:0]	word1 = fifo[1];
-wire	[2:0]	word2 = fifo[2];
-wire	[2:0]	word3 = fifo[3];
-wire	[2:0]	word4 = fifo[4];
-wire	[2:0]	word5 = fifo[5];
-wire	[2:0]	word6 = fifo[6];
-wire	[2:0]	word7 = fifo[7];
-
-wire	[2:0]	word8 = fifo[8];
-wire	[2:0]	word9 = fifo[9];
-wire	[2:0]	word10 = fifo[10];
-wire	[2:0]	word11 = fifo[11];
-wire	[2:0]	word12 = fifo[12];
-wire	[2:0]	word13 = fifo[13];
-wire	[2:0]	word14 = fifo[14];
-wire	[2:0]	word15 = fifo[15];
+//wire	[2:0]	word2 = fifo[2];
+//wire	[2:0]	word3 = fifo[3];
+//wire	[2:0]	word4 = fifo[4];
+//wire	[2:0]	word5 = fifo[5];
+//wire	[2:0]	word6 = fifo[6];
+//wire	[2:0]	word7 = fifo[7];
+//
+//wire	[2:0]	word8 = fifo[8];
+//wire	[2:0]	word9 = fifo[9];
+//wire	[2:0]	word10 = fifo[10];
+//wire	[2:0]	word11 = fifo[11];
+//wire	[2:0]	word12 = fifo[12];
+//wire	[2:0]	word13 = fifo[13];
+//wire	[2:0]	word14 = fifo[14];
+//wire	[2:0]	word15 = fifo[15];
 
 // a 1 is returned if any of the error bits in the fifo is 1
-assign	error_bit = |(word0[2:0]  | word1[2:0]  | word2[2:0]  | word3[2:0]  |
+/*assign	error_bit = |(word0[2:0]  | word1[2:0]  | word2[2:0]  | word3[2:0]  |
             		      word4[2:0]  | word5[2:0]  | word6[2:0]  | word7[2:0]  |
             		      word8[2:0]  | word9[2:0]  | word10[2:0] | word11[2:0] |
             		      word12[2:0] | word13[2:0] | word14[2:0] | word15[2:0] );
+*/
+assign	error_bit = |(word0[2:0]  | word1[2:0]  );
 
 endmodule

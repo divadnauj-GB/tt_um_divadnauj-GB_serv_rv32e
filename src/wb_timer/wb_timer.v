@@ -42,7 +42,7 @@ always @(*) begin
 end
 
 
-always @(posedge wb_clk, posedge wb_rst)
+always @(posedge wb_clk)
 	if (wb_rst) begin
 		wb_ack_o <= 0;
 		wb_dat_o <= 32'h0000_0000;
