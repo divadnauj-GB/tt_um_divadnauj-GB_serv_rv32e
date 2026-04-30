@@ -46,7 +46,7 @@ module tt_um_divadnauj_GB_serv_soc_wb (
 	
 	always@(negedge clk, negedge rst_n) begin
 		if (~rst_n) begin
-			rst_sync <= 0;
+			rst_sync <= 2'b10;
 		end else begin
 			rst_sync[0] <= 1'b1;
 			rst_sync[1] <= ~rst_sync[0];

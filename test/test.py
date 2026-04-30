@@ -44,7 +44,7 @@ async def test_uart(dut):
     cocotb.start_soon(uart_monitor.start())
     await ClockCycles(dut.clk, 10)
 
-    await ClockCycles(dut.clk, 20000 * 40)
+    await ClockCycles(dut.clk, 20000 * 50)
    
     await uart_send(dut.clk, uart_source, "g01000000")
 

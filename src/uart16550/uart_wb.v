@@ -235,9 +235,6 @@ always  @(posedge clk)
 	end
 
 always @(posedge clk)
-	if (wb_rst_i)
-		wb_dat_o <= 0;
-	else
 		wb_dat_o <= wb_dat8_o;
 
 always @(wb_dat_is)
