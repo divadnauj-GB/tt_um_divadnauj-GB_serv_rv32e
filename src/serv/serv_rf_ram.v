@@ -21,7 +21,7 @@ module serv_rf_ram
     output wire [width-1:0] 	   o_rdata);
 
    reg [width-1:0] 		   memory [0:depth-1];
-   reg [width-1:0] 		   rdata ;
+   wire [width-1:0] 		   rdata ;
    reg [$clog2(depth)-1:0] r_raddr ;
 
    wire wregzero = !(|i_waddr[$clog2(depth)-1:5-$clog2(width)]);
@@ -36,11 +36,11 @@ module serv_rf_ram
     end else begin
        if (i_wen & (!wregzero))
 	        memory[i_waddr-32/width] <= i_wdata;
-          //r_raddr <= i_raddr-32/width;
-        rdata = memory[i_raddr-32/width];
+          r_raddr <= i_raddr-32/width;
+        //rdata = memory[i_raddr-32/width];
     end
    end
-   //assign rdata = memory[r_raddr];
+   assign rdata = memory[r_raddr];
    /* Reads from reg x0 needs to return 0
     Check that the part of the read address corresponding to the register
     is zero and gate the output
