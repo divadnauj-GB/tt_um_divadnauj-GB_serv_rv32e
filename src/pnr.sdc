@@ -1,8 +1,7 @@
 read_sdc $::env(SCRIPTS_DIR)/base.sdc
 
 
-set_clock_uncertainty 2.5 -rise_from clk -fall_to clk
-set_clock_uncertainty 2 -fall_from clk -rise_to clk
+set_clock_uncertainty 0.25 [get_clocks $::env(CLOCK_PORT)]
 
 # Fix reset delay
 set_input_delay 1.5 -clock [get_clocks $::env(CLOCK_PORT)] {rst_n}
@@ -25,10 +24,15 @@ set_output_delay -clock [get_clocks $::env(CLOCK_PORT)] -min $output_hold_delay_
 set spi_clk_setup_delay_value [expr $::env(CLOCK_PERIOD) * 0.2]
 set_output_delay -clock [get_clocks $::env(CLOCK_PORT)] -max $spi_clk_setup_delay_value {uio_out[3]}
 
+set_max_transition 0.75 [current_design]
+set_max_fanout 16 [current_design]
 
 
 # ── Reset and enable are async → false paths ──────────────────────
-set_false_path -from [get_ports rst_n]
+#set_false_path -from [get_ports rst_n]
 set_false_path -from [get_ports ena]
 
-set_propagated_clock [all_clocks]
+set_propagated_clock [get_clocks $::env(CLOCK_PORT)]
+set_load 0.19 [all_outputs]
+
+
